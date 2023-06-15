@@ -1,12 +1,12 @@
 #include <iostream>
 #include <vector>
+#include<cstdlib>
 
 using namespace std;
 
 //Funciones
-void Instruccion();
+void Instruccions();
 char PlayerSymbol();
-char AskYesNo(string question);
 char Oponent(char Player);
 char Winner(const vector<char>& board);
 
@@ -15,23 +15,17 @@ const int	NUM_SQUARES = 9;
 const char	EMPTY = ' ';
 const char X = 'X';
 const char O = 'O';
-const bool NO_ONE = 'N';
+const bool NO_ONE = false;
 
 int main()
 {
-
-
-
-
-
-    //aaaaaah
-    //variables
     char Player = PlayerSymbol(), Computer, Turn = X;
     vector<char> board(NUM_SQUARES, EMPTY);
     Player = PlayerSymbol();
     Computer = Oponent(Player);
     cout << "jugaras como: " << Player << "\n La computadora jugara como: " << Computer << "\n";
-    Instruccion();
+
+    Instruccions();
 
     board[2] = O;
     board[4] = O;
@@ -42,34 +36,29 @@ int main()
 
     //}
 }
-void Instruccion()
+void Instruccions()
 {
     cout << "---------- Bienvenido a TikTakToe ----------\n";
     cout << "Su batalla sera legendaria\n";
     cout << "Selecione una posicion\n";
     cout << " 0 | 1 | 2 \n";
-    cout << " 3 | 4 | 5 \n ";
+    cout << " 3 | 4 | 5 \n";
     cout << " 6 | 7 | 8 \n";
 }
 char PlayerSymbol()
 {
-    char Option = AskYesNo("Quieres empezar?");
-    if (Option == 'y')
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    char answer;
+    do
     {
-        return X;
-    }
-    return O;
-}
-char AskYesNo(string question)
-{
-    fflush;
-    char answer = 'a';
-    while (answer != 'y' && answer != 'n')
-    {
-        cout << "\n" << question << "(y/n)\n";
+        cout << "Quieres empezar como X? (y/n)\n";
         cin >> answer;
-    }
-    return answer;
+        if (answer == 'y')
+        {
+            return X;
+        }
+    } while (answer=='n'||answer=='y');
+    return O;
 }
 char Oponent(char Player)
 {
@@ -84,10 +73,11 @@ char Oponent(char Player)
 }
 char Winner(const vector<char>& board)
 {
-    for (int i = 0; i <= 8 ; i++)
+    int aux = 0;
+    for (int i = 0; i <= 8; i++)
     {
         cout << "\n" << i << "\n";
-        if ((i%3) == 0 && board[i] == X && board[i] == board[i + 1] && board[i] == board[i + 2])
+        if ((i % 3) == 0 && board[i] == X && board[i] == board[i + 1] && board[i] == board[i + 2])
         {
             cout << " Ganaron las X\n";
             return X;
@@ -97,7 +87,7 @@ char Winner(const vector<char>& board)
             cout << " Ganaron las O\n";
             return O;
         }
-        else if (i == 0 && board[i]==X && board[i] == board[4] && board[i] == board[8])
+        else if (i == 0 && board[i] == X && board[i] == board[4] && board[i] == board[8])
         {
             cout << " Ganaron las X\n";
             return X;
@@ -105,9 +95,9 @@ char Winner(const vector<char>& board)
         else if (i == 0 && board[i] == O && board[i] == board[4] && board[i] == board[8])
         {
             cout << " Ganaron las X\n";
-            return O ;
+            return O;
         }
-        else if ( i < 3 && board[i] == X && board[i] == board[i + 3] && board[i] == board[i + 6])
+        else if (i < 3 && board[i] == X && board[i] == board[i + 3] && board[i] == board[i + 6])
         {
             cout << " Ganaron las X\n";
             return X;
@@ -126,6 +116,10 @@ char Winner(const vector<char>& board)
         {
             cout << " Ganaron las X\n";
             return O;
+        }
+        else if (board[i] == X || board[i] == O)
+        {
+            aux++;
         }
         system("pause");
     }
