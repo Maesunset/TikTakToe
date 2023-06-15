@@ -19,6 +19,12 @@ const bool NO_ONE = 'N';
 
 int main()
 {
+
+
+
+
+
+    //aaaaaah
     //variables
     char Player = PlayerSymbol(), Computer, Turn = X;
     vector<char> board(NUM_SQUARES, EMPTY);
