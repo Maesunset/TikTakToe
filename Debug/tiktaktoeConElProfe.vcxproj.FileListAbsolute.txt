@@ -1,1 +1,2 @@
 C:\Users\jared\OneDrive\Escritorio\TikTakToe\Debug\tiktaktoeConElProfe.exe
+C:\Users\jared\OneDrive\Escritorio\Escuela\Codigos\TikTakToe\Debug\tiktaktoeConElProfe.exe
