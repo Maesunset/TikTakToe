@@ -11,9 +11,10 @@ char PlayerSymbol();
 char Oponent(char Player);
 void ShowBoard(const vector<char> board);
 char WinConditions(const vector<char> board);
-void PlayMode(char Player, vector<char>& board);
+void PlayMode(char Player, char computer, vector<char>& board);
 void Winner(vector<char> board,char Player);
 void IA(char computer, char Player ,vector<char>& board);
+bool IAFIll(char Search, char fill, vector<char>& board);
 
 //Constantes
 const int	NUM_SQUARES = 9;
@@ -21,7 +22,7 @@ const char	EMPTY = ' ';
 const char X = 'X';
 const char O = 'O';
 const bool NO_ONE = false;
-const char EMP = 'EMP';
+const char EMP = 'E';
 
 int main()
 {
@@ -42,7 +43,7 @@ int main()
         {
             if (Player == X)
             {
-                PlayMode(Player, board);
+                PlayMode(Player, Computer, board);
             }
             else
             {
@@ -56,7 +57,7 @@ int main()
         {
             if (Player == O)
             {
-                PlayMode(Player, board);
+                PlayMode(Player, Computer, board);
             }
             else
             {
@@ -66,6 +67,9 @@ int main()
             }
         }
     }
+    system("pause");
+    system("cls");
+    ShowBoard(board);
     Winner(board, Player);
 }
 
@@ -101,6 +105,7 @@ char PlayerSymbol()
                 return O;
                 exit = false;
             }
+            exit = true;
         }
     } while (exit);
 }
@@ -200,27 +205,36 @@ char WinConditions(const vector<char> board)
     }
 }
 
-void PlayMode(char Player, vector<char>& board)
+void PlayMode(char Player, char Computer , vector<char>& board)
 {
     int aux;
-    cout << "Jugaran las " << Player;
-    cout << "\nSelecione una posicion\n";
-    ShowBoard(board);
-    cin >> aux;
-    if (Player == X)
+    bool exit = true;
+    do
     {
-        if (board[aux] != X)
+        cout << "Jugaran las " << Player;
+        cout << "\nSelecione una posicion\n";
+        ShowBoard(board);
+        cin >> aux;
+        if (board[aux] != Computer)
         {
-            board[aux] = X;
+            if (Player == X)
+            {
+                if (board[aux] != X)
+                {
+                    board[aux] = X;
+                    exit = false;
+                }
+            }
+            else if (Player == O)
+            {
+                if (board[aux] != O)
+                {
+                    board[aux] = O;
+                    exit = false;
+                }
+            }
         }
-    }
-    else if (Player == O)
-    {
-        if (board[aux] != O)
-        {
-            board[aux] = O;
-        }
-    }
+    } while (exit);
 }
 
 void Winner(vector<char> board,char Player )
@@ -271,329 +285,14 @@ void IA(char computer, char Player, vector<char>& board)
 
     // verificar si la computadora va a ganar
     if (IAMove)
-    {//Revision de forma horizontal
-        //del 0 al 2
-        if (board[0] == computer && board[1] == computer && board[2] == EMPTY && IAMove)
-        {
-            cout << 2 << endl;
-            board[2] = computer;
-            IAMove = false;
-        }
-        else if (board[1] == computer && board[2] == computer && board[0] == EMPTY && IAMove)
-        {
-            cout << 0 << endl;
-            board[0] = computer;
-            IAMove = false;
-        }
-        else if (board[0] == computer && board[2] == computer && board[1] == EMPTY && IAMove)
-        {
-            cout << 1 << endl;
-            board[1] = computer;
-            IAMove = false;
-        }
-        // del 3 al 5
-        else if (board[3] == computer && board[4] == computer && board[5] == EMPTY && IAMove)
-        {
-            cout << 5 << endl;
-            board[5] = computer;
-            IAMove = false;
-        }
-        else if (board[4] == computer && board[5] == computer && board[3] == EMPTY && IAMove)
-        {
-            cout << 3 << endl;
-            board[3] = computer;
-            IAMove = false;
-        }
-        else if (board[3] == computer && board[5] == computer && board[4] == EMPTY && IAMove)
-        {
-            cout << 4 << endl;
-            board[4] = computer;
-            IAMove = false;
-        }        // del 3 al 5
-        //del 6 al 8
-        else if (board[6] == computer && board[7] == computer && board[8] == EMPTY && IAMove)
-        {
-            cout << 8 << endl;
-            board[8] = computer;
-            IAMove = false;
-        }
-        else if (board[7] == computer && board[8] == computer && board[6] == EMPTY && IAMove)
-        {
-            cout << 6 << endl;
-            board[6] = computer;
-            IAMove = false;
-        }
-        else if (board[6] == computer && board[8] == computer && board[7] == EMPTY && IAMove)
-        {
-            cout << 7 << endl;
-            board[7] = computer;
-            IAMove = false;
-        }
-
-        //Revision de forma vertical
-        //numeros 0,3,6
-        if (board[0] == computer && board[3] == computer && board[6] == EMPTY && IAMove)
-        {
-            cout << 6 << endl;
-            board[6] = computer;
-            IAMove = false;
-        }
-        else if (board[3] == computer && board[6] == computer && board[0] == EMPTY && IAMove)
-        {
-            cout << 0 << endl;
-            board[0] = computer;
-            IAMove = false;
-        }
-        else if (board[0] == computer && board[6] == computer && board[3] == EMPTY && IAMove)
-        {
-            cout << 3 << endl;
-            board[3] = computer;
-            IAMove = false;
-        }
-        //numeros 1,4,7      
-        else if (board[1] == computer && board[4] == computer && board[7] == EMPTY && IAMove)
-        {
-            cout << 7 << endl;
-            board[7] = computer;
-            IAMove = false;
-        }
-        else if (board[4] == computer && board[7] == computer && board[1] == EMPTY && IAMove)
-        {
-            cout << 1 << endl;
-            board[1] = computer;
-            IAMove = false;
-        }
-        else if (board[1] == computer && board[7] == computer && board[4] == EMPTY && IAMove)
-        {
-            cout << 4 << endl;
-            board[4] = computer;
-            IAMove = false;
-        }
-        //numeros 2,5,8
-        else if (board[2] == computer && board[5] == computer && board[8] == EMPTY && IAMove)
-        {
-            cout << 8 << endl;
-            board[8] = computer;
-            IAMove = false;
-        }
-        else if (board[5] == computer && board[8] == computer && board[2] == EMPTY && IAMove)
-        {
-            cout << 2 << endl;
-            board[2] = computer;
-            IAMove = false;
-        }
-        else if (board[2] == computer && board[8] == computer && board[5] == EMPTY && IAMove)
-        {
-            cout << 5 << endl;
-            board[5] = computer;
-            IAMove = false;
-        }
-
-        //Revision de forma diagonal 
-        //0,4,8
-        if (board[0] == computer && board[4] == computer && board[8] == EMPTY && IAMove)
-        {
-            cout << 8 << endl;
-            board[8] = computer;
-            IAMove = false;
-        }
-        else if (board[4] == computer && board[8] == computer && board[0] == EMPTY && IAMove)
-        {
-            cout << 0 << endl;
-            board[0] = computer;
-            IAMove = false;
-        }
-        else if (board[0] == computer && board[8] == computer && board[4] == EMPTY && IAMove)
-        {
-            cout << 5 << endl;
-            board[4] = computer;
-            IAMove = false;
-        }
-
-        //Revision de forma diagonal inversa
-        //6,4,1
-        if (board[6] == computer && board[4] == computer && board[2] == EMPTY && IAMove)
-        {
-            cout << 2 << endl;
-            board[2] = computer;
-            IAMove = false;
-        }
-        else if (board[4] == computer && board[2] == computer && board[6] == EMPTY && IAMove)
-        {
-            cout << 6 << endl;
-            board[6] = computer;
-            IAMove = false;
-        }
-        else if (board[6] == computer && board[4] == computer && board[2] == EMPTY && IAMove)
-        {
-            cout << 2 << endl;
-            board[2] = computer;
-            IAMove = false;
-        }
+    {
+        IAMove = IAFIll(computer, computer, board);
     }
 
     // verificar si el player va a ganar 
     if (IAMove)
     {
-        //Revision de forma horizontal
-        //del 0 al 2
-        if (board[0] == Player && board[1] == Player && board[2] == EMPTY && IAMove) 
-        {
-            cout << 2 << endl;
-            board[2] = computer;
-            IAMove = false;
-        }       
-        else if (board[1] == Player && board[2] == Player && board[0] == EMPTY && IAMove) 
-        {
-            cout << 0 << endl;
-            board[0] = computer;
-            IAMove = false;
-        }       
-        else if (board[0] == Player && board[2] == Player && board[1] == EMPTY && IAMove) 
-        {
-            cout << 1 << endl;
-            board[1] = computer;
-            IAMove = false;
-        }   
-        // del 3 al 5
-        else if (board[3] == Player && board[4] == Player && board[5] == EMPTY && IAMove) 
-        {
-            cout << 5 << endl;
-            board[5] = computer;
-            IAMove = false;
-        }        
-        else if (board[4] == Player && board[5] == Player && board[3] == EMPTY && IAMove) 
-        {
-            cout << 3 << endl;
-            board[3] = computer;
-            IAMove = false;
-        }        
-        else if (board[3] == Player && board[5] == Player && board[4] == EMPTY && IAMove) 
-        {
-            cout << 4 << endl;
-            board[4] = computer;
-            IAMove = false;
-        }        // del 3 al 5
-        //del 6 al 8
-        else if (board[6] == Player && board[7] == Player && board[8] == EMPTY && IAMove) 
-        {
-            cout << 8 << endl;
-            board[8] = computer;
-            IAMove = false;
-        }        
-        else if (board[7] == Player && board[8] == Player && board[6] == EMPTY && IAMove) 
-        {
-            cout << 6 << endl;
-            board[6] = computer;
-            IAMove = false;
-        }        
-        else if (board[6] == Player && board[8] == Player && board[7] == EMPTY && IAMove) 
-        {
-            cout << 7 << endl;
-            board[7] = computer;
-            IAMove = false;
-        }
-
-        //Revision de forma vertical
-        //numeros 0,3,6
-        if (board[0] == Player && board[3] == Player && board[6] == EMPTY && IAMove)
-        {
-            cout << 6 << endl;
-            board[6] = computer;
-            IAMove = false;
-        }
-        else if (board[3] == Player && board[6] == Player && board[0] == EMPTY && IAMove)
-        {
-            cout << 0 << endl;
-            board[0] = computer;
-            IAMove = false;
-        }
-        else if (board[0] == Player && board[6] == Player && board[3] == EMPTY && IAMove)
-        {
-            cout << 3 << endl;
-            board[3] = computer;
-            IAMove = false;
-        }
-        //numeros 1,4,7      
-        else if (board[1] == Player && board[4] == Player && board[7] == EMPTY && IAMove)
-        {
-            cout << 7 << endl;
-            board[7] = computer;
-            IAMove = false;
-        }
-        else if (board[4] == Player && board[7] == Player && board[1] == EMPTY && IAMove)
-        {
-            cout << 1 << endl;
-            board[1] = computer;
-            IAMove = false;
-        }
-        else if (board[1] == Player && board[7] == Player && board[4] == EMPTY && IAMove)
-        {
-            cout << 4 << endl;
-            board[4] = computer;
-            IAMove = false;
-        }
-        //numeros 2,5,8
-        else if (board[2] == Player && board[5] == Player && board[8] == EMPTY && IAMove)
-        {
-            cout << 8 << endl;
-            board[8] = computer;
-            IAMove = false;
-        }
-        else if (board[5] == Player && board[8] == Player && board[2] == EMPTY && IAMove)
-        {
-            cout << 2 << endl;
-            board[2] = computer;
-            IAMove = false;
-        }
-        else if (board[2] == Player && board[8] == Player && board[5] == EMPTY && IAMove)
-        {
-            cout << 5 << endl;
-            board[5] = computer;
-            IAMove = false;
-        }
-        
-        //Revision de forma diagonal 
-        //0,4,8
-        if (board[0] == Player && board[4] == Player && board[8] == EMPTY && IAMove)
-        {
-            cout << 8 << endl;
-            board[8] = computer;
-            IAMove = false;
-        }
-        else if (board[4] == Player && board[8] == Player && board[0] == EMPTY && IAMove)
-        {
-            cout << 0 << endl;
-            board[0] = computer;
-            IAMove = false;
-        }
-        else if (board[0] == Player && board[8] == Player && board[4] == EMPTY && IAMove)
-        {
-            cout << 5 << endl;
-            board[4] = computer;
-            IAMove = false;
-        }
-
-        //Revision de forma diagonal inversa
-        //6,4,1
-        if (board[6] == Player && board[4] == Player && board[2] == EMPTY && IAMove)
-        {
-            cout << 2 << endl;
-            board[2] = computer;
-            IAMove = false;
-        }
-        else if (board[4] == Player && board[2] == Player && board[6] == EMPTY && IAMove)
-        {
-            cout << 6 << endl;
-            board[6] = computer;
-            IAMove = false;
-        }
-        else if (board[6] == Player && board[4] == Player && board[2] == EMPTY && IAMove)
-        {
-            cout << 2 << endl;
-            board[2] = computer;
-            IAMove = false;
-        }
+        IAMove = IAFIll(Player, computer, board);
     }
 
     // pone en un lugar aleatorio si nada de lo anterior sucede
@@ -601,7 +300,7 @@ void IA(char computer, char Player, vector<char>& board)
     {
         do
         {
-            srand((unsigned)time(NULL));
+            srand((unsigned) time(NULL));
             int random = (rand() % 7) + 1;
             if (board[random] == EMPTY)
             {
@@ -612,4 +311,168 @@ void IA(char computer, char Player, vector<char>& board)
         } while (exit);
     }
 
+}
+
+bool IAFIll(char Search, char fill, vector<char>& board)
+{
+    // Revision de forma horizontal
+    //del 0 al 2
+    if (board[0] == Search && board[1] == Search && board[2] == EMPTY)
+    {
+        cout << 2 << endl;
+        board[2] = fill;
+        return false;
+    }
+    else if (board[1] == Search && board[2] == Search && board[0] == EMPTY)
+    {
+        cout << 0 << endl;
+        board[0] = fill;
+        return false;
+    }
+    else if (board[0] == Search && board[2] == Search && board[1] == EMPTY)
+    {
+        cout << 1 << endl;
+        board[1] = fill;
+        return false;
+    }
+    // del 3 al 5
+    else if (board[3] == Search && board[4] == Search && board[5] == EMPTY)
+    {
+        cout << 5 << endl;
+        board[5] = fill;
+        return false;
+    }
+    else if (board[4] == Search && board[5] == Search && board[3] == EMPTY)
+    {
+        cout << 3 << endl;
+        board[3] = fill;
+        return false;
+    }
+    else if (board[3] == Search && board[5] == Search && board[4] == EMPTY)
+    {
+        cout << 4 << endl;
+        board[4] = fill;
+        return false;
+    }       
+    //del 6 al 8
+    else if (board[6] == Search && board[7] == Search && board[8] == EMPTY)
+    {
+        cout << 8 << endl;
+        board[8] = fill;
+        return false;
+    }
+    else if (board[7] == Search && board[8] == Search && board[6] == EMPTY)
+    {
+        cout << 6 << endl;
+        board[6] = fill;
+        return false;
+    }
+    else if (board[6] == Search && board[8] == Search && board[7] == EMPTY)
+    {
+        cout << 7 << endl;
+        board[7] = fill;
+        return false;
+    }
+
+    //Revision de forma vertical
+    //numeros 0,3,6
+    if (board[0] == Search && board[3] == Search && board[6] == EMPTY)
+    {
+        cout << 6 << endl;
+        board[6] = fill;
+        return false;
+    }
+    else if (board[3] == Search && board[6] == Search && board[0] == EMPTY)
+    {
+        cout << 0 << endl;
+        board[0] = fill;
+        return false;
+    }
+    else if (board[0] == Search && board[6] == Search && board[3] == EMPTY)
+    {
+        cout << 3 << endl;
+        board[3] = fill;
+        return false;
+    }
+    //numeros 1,4,7      
+    else if (board[1] == Search && board[4] == Search && board[7] == EMPTY)
+    {
+        cout << 7 << endl;
+        board[7] = fill;
+        return false;
+    }
+    else if (board[4] == Search && board[7] == Search && board[1] == EMPTY)
+    {
+        cout << 1 << endl;
+        board[1] = fill;
+        return false;
+    }
+    else if (board[1] == Search && board[7] == Search && board[4] == EMPTY)
+    {
+        cout << 4 << endl;
+        board[4] = fill;
+        return false;
+    }
+    //numeros 2,5,8
+    else if (board[2] == Search && board[5] == Search && board[8] == EMPTY)
+    {
+        cout << 8 << endl;
+        board[8] = fill;
+        return false;
+    }
+    else if (board[5] == Search && board[8] == Search && board[2] == EMPTY)
+    {
+        cout << 2 << endl;
+        board[2] = fill;
+        return false;
+    }
+    else if (board[2] == Search && board[8] == Search && board[5] == EMPTY)
+    {
+        cout << 5 << endl;
+        board[5] = fill;
+        return false;
+    }
+
+    //Revision de forma diagonal 
+    //0,4,8
+    if (board[0] == Search && board[4] == Search && board[8] == EMPTY)
+    {
+        cout << 8 << endl;
+        board[8] = fill;
+        return false;
+    }
+    else if (board[4] == Search && board[8] == Search && board[0] == EMPTY)
+    {
+        cout << 0 << endl;
+        board[0] = fill;
+        return false;
+    }
+    else if (board[0] == Search && board[8] == Search && board[4] == EMPTY)
+    {
+        cout << 5 << endl;
+        board[4] = fill;
+        return false;
+    }
+
+    //Revision de forma diagonal inversa
+    //6,4,1
+    if (board[6] == Search && board[4] == Search && board[2] == EMPTY)
+    {
+        cout << 2 << endl;
+        board[2] = fill;
+        return false;
+    }
+    else if (board[4] == Search && board[2] == Search && board[6] == EMPTY)
+    {
+        cout << 6 << endl;
+        board[6] = fill;
+        return false;
+    }
+    else if (board[6] == Search && board[4] == Search && board[2] == EMPTY)
+    {
+        cout << 2 << endl;
+        board[2] = fill;
+        return false;
+    }
+    return true;
 }
