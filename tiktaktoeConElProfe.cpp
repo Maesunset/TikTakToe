@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include<cstdlib>
+#include "Archivo_de_Examen.h"
 
 using namespace std;
 
@@ -29,6 +30,9 @@ const int TOTAL_ROWS = 8;
 
 int main()
 {
+    //examen 
+    Parte2Examen();
+    //tiktaktoe
     char Player, Computer, Turn = X;
     vector<char> board(NUM_SQUARES, EMPTY);
     // inicio del juego
@@ -90,23 +94,43 @@ void Instruccions()
 
 char PlayerSymbol()
 {
-    char answer;
+    string answer;
     bool exit = true;
+    string par = "par";
+    string impar = "impar";
+    srand((unsigned)time(NULL));
+    int random = ((rand() * rand()) % 5) +1;
     do
     {
-        cout << "quieres jugar como las X, y/n\n";
+        cout << random <<" quieres Par o inpar\n";
         cin >> answer;
-        if (answer == 'y'||answer == 'n')
+        if (answer == par ||answer == impar )
         {
-            if (answer=='y')
+            if (answer == par)
             {
-                return X;
-                exit = false;
+                if ((random % 2) == 0)
+                {
+                    return X;
+                    exit = false;
+                }
+                else
+                {
+                    return O;
+                    exit = false;
+                }
             }
-            else
+            else if(answer == impar)
             {
-                return O;
-                exit = false;
+                if ((random % 2) == 1)
+                {
+                    return O;
+                    exit = false;
+                }
+                else
+                {
+                    return X;
+                    exit = false;
+                }
             }
         }
     } while (exit);
@@ -243,7 +267,7 @@ void PlayMode(char Player, char Computer , vector<char>& board)
 
 int askNumber(const int Max, int Min)
 {
-    int aux;
+    int aux = 1;
     return aux;
 }
 

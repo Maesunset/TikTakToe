@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="tiktaktoeConElProfe.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Archivo_de_Examen.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
