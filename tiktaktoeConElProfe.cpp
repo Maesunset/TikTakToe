@@ -13,8 +13,10 @@ void ShowBoard(const vector<char> board);
 char WinConditions(const vector<char> board);
 void PlayMode(char Player, char computer, vector<char>& board);
 void Winner(vector<char> board,char Player);
+int askNumber(int Max, int Min);
 void IA(char computer, char Player ,vector<char>& board);
 bool IAFIll(char Search, char fill, vector<char>& board);
+bool IALOgicSistem(vector<char>& board, char fill, char search, int n1, int n2, int n3);
 
 //Constantes
 const int	NUM_SQUARES = 9;
@@ -23,6 +25,7 @@ const char X = 'X';
 const char O = 'O';
 const bool NO_ONE = false;
 const char EMP = 'E';
+const int TOTAL_ROWS = 8;
 
 int main()
 {
@@ -105,9 +108,9 @@ char PlayerSymbol()
                 return O;
                 exit = false;
             }
-            exit = true;
         }
     } while (exit);
+    return EMPTY;
 }
 
 char Oponent(char Player)
@@ -124,7 +127,7 @@ char Oponent(char Player)
 
 void ShowBoard(const vector<char> board)
 {
-    for (int i = 0; i < board.size(); i++)
+    for (int i = 0; i <= TOTAL_ROWS; i++)
     {
         if (i == 2 || i == 5 || i == 8)
         {
@@ -215,17 +218,18 @@ void PlayMode(char Player, char Computer , vector<char>& board)
         cout << "\nSelecione una posicion\n";
         ShowBoard(board);
         cin >> aux;
+       // aux = askNumber(NUM_SQUARES, 0);
         if (board[aux] != Computer)
         {
             if (Player == X)
             {
-                if (board[aux] != X)
+                if (board[aux] != X && aux >= 0 && aux < 9)
                 {
                     board[aux] = X;
                     exit = false;
                 }
             }
-            else if (Player == O)
+            else if (Player == O && aux >= 0 && aux < 9)
             {
                 if (board[aux] != O)
                 {
@@ -235,6 +239,12 @@ void PlayMode(char Player, char Computer , vector<char>& board)
             }
         }
     } while (exit);
+}
+
+int askNumber(const int Max, int Min)
+{
+    int aux;
+    return aux;
 }
 
 void Winner(vector<char> board,char Player )
@@ -301,13 +311,15 @@ void IA(char computer, char Player, vector<char>& board)
         do
         {
             srand((unsigned) time(NULL));
-            int random = (rand() % 7) + 1;
+            int random = ((rand()*rand()) % 7) + 1;
             if (board[random] == EMPTY)
             {
                 board[random] = computer;
                 exit = false;
                 IAMove = false;
+                cout << random << endl;
             }
+
         } while (exit);
     }
 
@@ -315,163 +327,45 @@ void IA(char computer, char Player, vector<char>& board)
 
 bool IAFIll(char Search, char fill, vector<char>& board)
 {
-    // Revision de forma horizontal
-    //del 0 al 2
-    if (board[0] == Search && board[1] == Search && board[2] == EMPTY)
+    bool IAMove = true;
+    int boardSolutions[8][3] = { {0, 1, 2},
+                                 {3, 4, 5},
+                                 {6, 7, 8},
+                                 {0, 3, 6},
+                                 {1, 4, 7},
+                                 {2, 5, 8},
+                                 {2, 4, 6},
+                                 {0, 4, 8}, };
+
+    for (int i = 0; i < TOTAL_ROWS; i++)
     {
-        cout << 2 << endl;
-        board[2] = fill;
-        return false;
-    }
-    else if (board[1] == Search && board[2] == Search && board[0] == EMPTY)
-    {
-        cout << 0 << endl;
-        board[0] = fill;
-        return false;
-    }
-    else if (board[0] == Search && board[2] == Search && board[1] == EMPTY)
-    {
-        cout << 1 << endl;
-        board[1] = fill;
-        return false;
-    }
-    // del 3 al 5
-    else if (board[3] == Search && board[4] == Search && board[5] == EMPTY)
-    {
-        cout << 5 << endl;
-        board[5] = fill;
-        return false;
-    }
-    else if (board[4] == Search && board[5] == Search && board[3] == EMPTY)
-    {
-        cout << 3 << endl;
-        board[3] = fill;
-        return false;
-    }
-    else if (board[3] == Search && board[5] == Search && board[4] == EMPTY)
-    {
-        cout << 4 << endl;
-        board[4] = fill;
-        return false;
-    }       
-    //del 6 al 8
-    else if (board[6] == Search && board[7] == Search && board[8] == EMPTY)
-    {
-        cout << 8 << endl;
-        board[8] = fill;
-        return false;
-    }
-    else if (board[7] == Search && board[8] == Search && board[6] == EMPTY)
-    {
-        cout << 6 << endl;
-        board[6] = fill;
-        return false;
-    }
-    else if (board[6] == Search && board[8] == Search && board[7] == EMPTY)
-    {
-        cout << 7 << endl;
-        board[7] = fill;
-        return false;
+        if ((IAMove = IALOgicSistem(board, fill, Search, boardSolutions[i][0], boardSolutions[i][1], boardSolutions[i][2])) == false)
+        {
+            return false;
+        }
     }
 
-    //Revision de forma vertical
-    //numeros 0,3,6
-    if (board[0] == Search && board[3] == Search && board[6] == EMPTY)
-    {
-        cout << 6 << endl;
-        board[6] = fill;
-        return false;
-    }
-    else if (board[3] == Search && board[6] == Search && board[0] == EMPTY)
-    {
-        cout << 0 << endl;
-        board[0] = fill;
-        return false;
-    }
-    else if (board[0] == Search && board[6] == Search && board[3] == EMPTY)
-    {
-        cout << 3 << endl;
-        board[3] = fill;
-        return false;
-    }
-    //numeros 1,4,7      
-    else if (board[1] == Search && board[4] == Search && board[7] == EMPTY)
-    {
-        cout << 7 << endl;
-        board[7] = fill;
-        return false;
-    }
-    else if (board[4] == Search && board[7] == Search && board[1] == EMPTY)
-    {
-        cout << 1 << endl;
-        board[1] = fill;
-        return false;
-    }
-    else if (board[1] == Search && board[7] == Search && board[4] == EMPTY)
-    {
-        cout << 4 << endl;
-        board[4] = fill;
-        return false;
-    }
-    //numeros 2,5,8
-    else if (board[2] == Search && board[5] == Search && board[8] == EMPTY)
-    {
-        cout << 8 << endl;
-        board[8] = fill;
-        return false;
-    }
-    else if (board[5] == Search && board[8] == Search && board[2] == EMPTY)
-    {
-        cout << 2 << endl;
-        board[2] = fill;
-        return false;
-    }
-    else if (board[2] == Search && board[8] == Search && board[5] == EMPTY)
-    {
-        cout << 5 << endl;
-        board[5] = fill;
-        return false;
-    }
+    return true;
+}
 
-    //Revision de forma diagonal 
-    //0,4,8
-    if (board[0] == Search && board[4] == Search && board[8] == EMPTY)
+bool IALOgicSistem(vector<char>& board, char fill, char search, int n1 ,int n2 , int n3)
+{
+    if (board[n1] == search && board[n2] == search && board[n3] == EMPTY)
     {
-        cout << 8 << endl;
-        board[8] = fill;
+        cout << n3 << endl;
+        board[n3] = fill;
         return false;
     }
-    else if (board[4] == Search && board[8] == Search && board[0] == EMPTY)
+    else if (board[n2] == search && board[n3] == search && board[n1] == EMPTY)
     {
-        cout << 0 << endl;
-        board[0] = fill;
+        cout << n1 << endl;
+        board[n1] = fill;
         return false;
     }
-    else if (board[0] == Search && board[8] == Search && board[4] == EMPTY)
+    else if (board[n1] == search && board[n3] == search && board[n2] == EMPTY)
     {
-        cout << 5 << endl;
-        board[4] = fill;
-        return false;
-    }
-
-    //Revision de forma diagonal inversa
-    //6,4,1
-    if (board[6] == Search && board[4] == Search && board[2] == EMPTY)
-    {
-        cout << 2 << endl;
-        board[2] = fill;
-        return false;
-    }
-    else if (board[4] == Search && board[2] == Search && board[6] == EMPTY)
-    {
-        cout << 6 << endl;
-        board[6] = fill;
-        return false;
-    }
-    else if (board[6] == Search && board[4] == Search && board[2] == EMPTY)
-    {
-        cout << 2 << endl;
-        board[2] = fill;
+        cout << n2 << endl;
+        board[n2] = fill;
         return false;
     }
     return true;

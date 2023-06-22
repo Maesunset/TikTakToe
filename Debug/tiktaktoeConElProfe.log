@@ -1,4 +1,2 @@
 ﻿  tiktaktoeConElProfe.cpp
-C:\Users\jared\OneDrive\Escritorio\Escuela\Codigos\TikTakToe\tiktaktoeConElProfe.cpp(127,23): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\jared\OneDrive\Escritorio\Escuela\Codigos\TikTakToe\tiktaktoeConElProfe.cpp(111): warning C4715: 'PlayerSymbol': no todas las rutas de acceso de control devuelven un valor
   tiktaktoeConElProfe.vcxproj -> C:\Users\jared\OneDrive\Escritorio\Escuela\Codigos\TikTakToe\Debug\tiktaktoeConElProfe.exe
